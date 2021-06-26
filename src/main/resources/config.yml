@@ -1,0 +1,31 @@
+# Token used for accessing Discord, set by using /discordmobs connect
+access_token: "NO_TOKEN"
+
+# Setting this to true will not spawn any mobs with names of bots on your Discord Server
+ignore_bots: true
+
+# Chance a hostile mob will spawn with a name tag (Allowed values: 0 - 100)
+# Hostile mobs include: Blaze, Cave Spider, Creeper, Drowned, Elder Guardian, Enderman,
+# Endermite, Evoker, Ghast, Guardian, Hoglin, Husk, Magma Cube, Piglin Brute, Pillager,
+# Ravager, Ravager Jockey, Shulker, Silverfish, Skeleton, Skeleton Horseman, Slime, Spider, 
+# Spider Jockey, Stray, Vex, Vindicator, Witch, Wither Skeleton, Zoglin, Zombie, Zombie Villager
+hostile_mobs_chance: 20
+
+# Chance a passive/neutral mob will spawn with a name tag (Allowed values: 0 - 100)
+# Passive/neutral mobs include:
+# Axolotl, Bat, Bee, Chicken, Cod, Cow, Dolphin, Fox, Glow Squid, Goat, Mooshroom, 
+# Ocelot, Panda, Pig, Piglin, Polar Bear, Pufferfish, Rabbit, Salmon, Sheep, Skeleton Horse,
+# Squid, Strider, Tropical Fish, Turtle, Villager, Wandering Trader, Zombified Piglin  
+passive_mobs_chance: 10
+
+# Chance a tameable mob will spawn with a name tag (Allowed values: 0 - 100)
+# Tameable mobs include: Cat, Donkey, Horse, Mule, Parrot, Wolf
+tameable_mobs_chance: 0
+
+# Allows you set a custom spawn rate per mob, overrides any of the above categories
+# For example, if you changed the VILLAGER: -1 to VILLAGER: 0 below, villagers
+# would never spawn with a name tag.
+# For mob names to use as a key, 
+# see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html#enum.constant.summary
+override_mob_chance:
+  VILLAGER: -1

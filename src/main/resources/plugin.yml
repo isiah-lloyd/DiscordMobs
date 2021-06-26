@@ -1,0 +1,28 @@
+name: ${name}
+version: ${version}
+author: Goat_Dope
+main: me.isiah.discordmobs.Main
+api-version: 1.17
+
+commands:
+  discordmobs:
+    usage: /discordmobs [status | connect | sync | reload]
+
+
+permissions:
+  discordmobs.*:
+    description: Grants access to all DiscordMobs commands
+    default: op
+    children:
+      discordmobs.status: true
+      discordmobs.connect: true
+      discordmobs.sync: true
+      discordmobs.reload: true
+  discordmobs.status:
+    description: Allows user to use the base /discordmobs command to check plugin info and status of Discord connection
+  discordmobs.connect:
+    description: Allows user to connect their Discord Guild to the server
+  discordmobs.sync:
+    description: Allows user to sync the Discord names in memory to the ones on the server
+  discordmobs.reload:
+    description: Allows user to reload the config from file system
