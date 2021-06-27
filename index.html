@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DiscordMobs</title>
+        <style type="text/css">
+            body {
+                display: flex;
+                min-height: 100vh;
+                justify-content: center;
+                align-items: center;
+                background: url('imgs/background.png') repeat;
+                margin: 0 0;
+            }
+            main {
+                text-align: center;
+                list-style: inside;
+                background-color: white;
+            }
+            h1, h2{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            p,ol,a,output {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            }
+            output {
+                background-color: black;
+                color: white;
+                font-family: monospace;
+            }
+            .warn {
+                color: rgb(179, 32, 32);
+            }
+            .hiddenImgBtn {
+                cursor: pointer;
+            }
+            .hiddenImgBtn > img {
+                display: none;
+            }
+            .hiddenImgBtn:hover > img {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            #cmd_container {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>How To Connect DiscordMobs To Your Server</h1>
+            <p>In order to connect DiscordMobs to Discord, you must create a bot for your server. This webpage will walk you through the process!</p>
+            <h2>Creating your Bot</h2>
+            <ol>
+                <li>Go to the <a target="_blank" href="https://discord.com/developers/applications">Discord Developer Portal</a></li>
+                <li>Press the "New Application" button
+                    <button onclick="window.open('imgs/new_application.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/new_application.jpg">
+                    </button>
+                </li>
+                <li>Name your application whatever you want and click "Create"
+                    <button onclick="window.open('imgs/name_app.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/name_app.jpg">
+                    </button>
+                </li>
+                <li>You will be redirected to the General Information page, copy your Application ID and paste it below:
+                    <button onclick="window.open('imgs/copy_id.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/copy_id.jpg">
+                    </button>
+                </li>
+                <input type="text" id="application_id" placeholder="APPLICATION ID">
+                <li>Go to your applications Bot page (located in the sidebar)
+                    <button onclick="window.open('imgs/bot_sidebar.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/bot_sidebar.jpg">
+                    </button>                    
+                </li>
+                <li>Click "Add Bot" button
+                    <button onclick="window.open('imgs/add_bot.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/add_bot.jpg">
+                    </button>                   
+                </li>
+                <li>Copy your bots token and paste it below:
+                    <button onclick="window.open('imgs/copy_token.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/copy_token.jpg">
+                    </button>  
+                </li>
+                <input type="text" id="bot_token" placeholder="TOKEN">
+                <li>Scroll down to the "Privileged Gateway Intents" section and enable  "SERVER MEMBERS INTENT",<br />
+                    this will allow your bot to see the members of your server
+                    <button onclick="window.open('imgs/priv_intent.jpg', '_blank')" class="hiddenImgBtn">📷
+                        <img src="imgs/priv_intent.jpg">
+                    </button>
+                </li>
+            </ol>
+            <h2>Adding your bot to your Discord server</h2>
+            <p id="warn_link" class="warn">Paste your application ID above to get a special link that adds your bot to your server.</p>
+            <a id="server_join_link" target="_blank" href="#" style="display: none;">Click here to add your bot to your server</a>
+            <h2>Connect DiscordMobs to your bot</h2>
+            <div id="warn_container">
+                <p id="warn_cmd" class="warn">Paste your bot token above to generate the command you need to run in Minecraft</p>
+                <p>(or run /discordmobs connect &lt;bot_token&gt;)</p>
+            </div>
+            <div id="cmd_container">
+                <p>Run the following command on your Minecraft server:</p>
+                <output id="cmd" for="bot_token"></output>
+                <div><button id="copy">Copy to clipboard</button></div>
+            </div>
+        </main>
+    </body>
+    <script>
+        document.querySelector("#application_id").addEventListener('input', (e) => {
+            if(e.target.value.length > 0) {
+                document.querySelector("#server_join_link").setAttribute('href', `https://discord.com/api/oauth2/authorize?client_id=${e.target.value}&scope=bot`);
+                document.querySelector("#warn_link").style.display = 'none';
+                document.querySelector("#server_join_link").style.display = 'block';
+            }
+            else {
+                document.querySelector("#warn_link").style.display = 'block';
+                document.querySelector("#server_join_link").style.display = 'none';
+            }
+        })
+        document.querySelector("#bot_token").addEventListener('input', (e) => {
+            if(e.target.value.length > 0) {
+                document.querySelector("#cmd").value = `/discordmobs connect ${e.target.value}`;
+                document.querySelector("#warn_container").style.display = 'none';
+                document.querySelector("#cmd_container").style.display = 'block';
+            }
+            else {
+                document.querySelector("#cmd").value = "";
+                document.querySelector("#warn_container").style.display = 'block';
+                document.querySelector("#cmd_container").style.display = 'none';
+            }
+        })
+        document.querySelector("#copy").addEventListener('click', async (e) => {
+            await navigator.clipboard.writeText(document.querySelector("#cmd").value);
+            document.querySelector("#copy").textContent = "Copied!";
+        })
+    </script>
+</html>
