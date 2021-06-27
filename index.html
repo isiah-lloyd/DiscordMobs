@@ -6,6 +6,7 @@
             body {
                 display: flex;
                 min-height: 100vh;
+                flex-flow: column;
                 justify-content: center;
                 align-items: center;
                 background: url('imgs/background.png') repeat;
@@ -44,6 +45,13 @@
             }
             #cmd_container {
                 display: none;
+            }
+            footer {
+                display: block;
+                color: gray;
+            }
+            footer > a {
+                color: gray;
             }
         </style>
     </head>
@@ -107,6 +115,9 @@
                 <div><button id="copy">Copy to clipboard</button></div>
             </div>
         </main>
+        <footer>
+            <span>No data inputted here is transmitted or stored | </span><a href="https://github.com/isiah-lloyd/DiscordMobs" target="_blank">Source Code</a>
+        </footer>
     </body>
     <script>
         document.querySelector("#application_id").addEventListener('input', (e) => {
