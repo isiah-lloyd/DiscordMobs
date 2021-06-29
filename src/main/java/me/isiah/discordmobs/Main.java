@@ -35,6 +35,12 @@ public class Main extends JavaPlugin {
       setCustomEntities();
       getCommand("discordmobs").setExecutor(new BaseCommand(this));
 		  getServer().getPluginManager().registerEvents(creatureSpawnEvent, this);
+      Metrics metrics = new Metrics(this, 11875);
+      new UpdateChecker(this, 93728).getVersion(version -> {
+        if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
+          getLogger().info("[DiscordMobs] There is a new update available! Go to https://www.spigotmc.org/resources/discordmobs.93728/ to download.");
+        }
+      });
     }
     @Override
     public void onDisable() {

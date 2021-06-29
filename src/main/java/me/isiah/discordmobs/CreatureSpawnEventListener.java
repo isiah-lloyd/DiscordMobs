@@ -34,7 +34,7 @@ public class CreatureSpawnEventListener implements Listener {
 
     public CreatureSpawnEventListener(Main plugin) {
         this.plugin = plugin;
-        if(plugin.getServer().getVersion().contains("1.16")) {
+        if(plugin.getServer().getVersion().contains("1.17")) {
             PASSIVE_MOBS.addAll(List.of(EntityType.AXOLOTL, EntityType.GLOW_SQUID, EntityType.GOAT));
         }
     }
