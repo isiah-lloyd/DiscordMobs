@@ -2,7 +2,7 @@ name: ${name}
 version: ${version}
 author: Goat_Dope
 main: me.isiah.discordmobs.Main
-api-version: 1.17
+api-version: 1.16
 
 commands:
   discordmobs:

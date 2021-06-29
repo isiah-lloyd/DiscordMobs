@@ -64,6 +64,10 @@ public class BaseCommand implements CommandExecutor, TabCompleter {
                 sender.spigot().sendMessage(getHelpMsg(sender));
                 return true;
             }
+            else {
+                sender.spigot().sendMessage(getNoPermMsg(PERM_NODES.PERM_STATUS));
+                return true;
+            }
         }
         switch(args[0]) {
             case "connect":

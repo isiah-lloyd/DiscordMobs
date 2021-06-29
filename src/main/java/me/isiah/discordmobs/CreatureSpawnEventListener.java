@@ -1,5 +1,6 @@
 package me.isiah.discordmobs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -18,11 +19,11 @@ public class CreatureSpawnEventListener implements Listener {
     EntityType.SLIME, EntityType.SPIDER, EntityType.STRAY, EntityType.VEX, EntityType.VINDICATOR, EntityType.WITCH, EntityType.WITHER_SKELETON,
     EntityType.ZOGLIN, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER);
 
-    private static final List<EntityType> PASSIVE_MOBS = List.of(EntityType.AXOLOTL, EntityType.BAT, EntityType.BEE, EntityType.CHICKEN,
-    EntityType.COD, EntityType.COW, EntityType.DOLPHIN, EntityType.FOX, EntityType.GLOW_SQUID, EntityType.GOAT, EntityType.MUSHROOM_COW,
+    private List<EntityType> PASSIVE_MOBS = new ArrayList<>(List.of(EntityType.BAT, EntityType.BEE, EntityType.CHICKEN,
+    EntityType.COD, EntityType.COW, EntityType.DOLPHIN, EntityType.FOX, EntityType.MUSHROOM_COW,
     EntityType.OCELOT, EntityType.PANDA, EntityType.PIG, EntityType.PIGLIN, EntityType.POLAR_BEAR, EntityType.PUFFERFISH, EntityType.RABBIT,
     EntityType.SALMON, EntityType.SHEEP, EntityType.SKELETON_HORSE, EntityType.SQUID, EntityType.STRIDER, EntityType.TROPICAL_FISH, EntityType.TURTLE,
-    EntityType.VILLAGER, EntityType.WANDERING_TRADER, EntityType.WANDERING_TRADER, EntityType.ZOMBIFIED_PIGLIN);
+    EntityType.VILLAGER, EntityType.WANDERING_TRADER, EntityType.WANDERING_TRADER, EntityType.ZOMBIFIED_PIGLIN));
 
     private static final List<EntityType> TAMEABLE_MOBS = List.of(EntityType.CAT, EntityType.DONKEY, EntityType.HORSE, EntityType.MULE, EntityType.PARROT, EntityType.WOLF);
 
@@ -33,6 +34,9 @@ public class CreatureSpawnEventListener implements Listener {
 
     public CreatureSpawnEventListener(Main plugin) {
         this.plugin = plugin;
+        if(plugin.getServer().getVersion().contains("1.16")) {
+            PASSIVE_MOBS.addAll(List.of(EntityType.AXOLOTL, EntityType.GLOW_SQUID, EntityType.GOAT));
+        }
     }
     /* TODO: *Add optional death message to names mobs
              * Try to reduce distance of nameplates/ only show if within distance of user(EntityTargetEvent??/ getNearbentite??)*/
