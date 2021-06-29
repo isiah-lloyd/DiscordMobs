@@ -65,7 +65,6 @@ public class ConfigUpdater {
             }
 
             for (String ignoredSection : ignoredSections) {
-                plugin.getLogger().info("ignored:" + ignoredSection);
                 if (key.startsWith(ignoredSection)) {
                     continue outer;
                 }

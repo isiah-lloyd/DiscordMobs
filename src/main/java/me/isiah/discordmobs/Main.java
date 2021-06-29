@@ -52,6 +52,7 @@ public class Main extends JavaPlugin {
     }
     public void rConfig() {
       reloadConfig();
+      this.config = getConfig();
       setCustomEntities();
     }
     public void setCustomEntities() {

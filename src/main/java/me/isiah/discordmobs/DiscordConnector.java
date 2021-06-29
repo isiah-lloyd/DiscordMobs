@@ -103,7 +103,7 @@ public class DiscordConnector {
                                             .event(new ClickEvent(Action.OPEN_URL, "http://discordmobs.isiah.me/"))
                                             .append(" to learn how to connect DiscordMobs to your Discord server!", FormatRetention.NONE)
                                             .create();
-                sendToPlayerOrConsole(sender, "");
+                sendToPlayerOrConsole(sender, msg, "[DiscordMobs] This bot is not in any Discord servers, clearing access token!\nGo to http://discordmobs.isiah.me/ to learn how to connect DiscordMobs to your Discord server!");
                 this.accessToken = null;
                 return false;
             }
@@ -146,7 +146,7 @@ public class DiscordConnector {
                                       .event(new ClickEvent(Action.OPEN_URL, "http://discordmobs.isiah.me/"))
                                       .append(" to learn how to connect DiscordMobs to your Discord server!", FormatRetention.NONE)
                                       .create();
-                sendToPlayerOrConsole(sender, msg);
+                sendToPlayerOrConsole(sender, msg, "[DiscordMobs] Got HTTP 403 Unauthorized, did you remember to enable the SERVER MEMBERS INTENT permission on Discord?\nGo to http://discordmobs.isiah.me/ to learn how to connect DiscordMobs to your Discord server!");
                 return;
             }
             else if(response.statusCode() != 200) {
@@ -178,9 +178,9 @@ public class DiscordConnector {
             sender.sendMessage(msg);
         }
     }
-    public void sendToPlayerOrConsole(CommandSender sender, BaseComponent[] msg) {
+    public void sendToPlayerOrConsole(CommandSender sender, BaseComponent[] msg, String msgString) {
         if (sender == null) {
-            this.plugin.getLogger().info(msg.toString());
+            this.plugin.getLogger().info(msgString);
         }
         else {
             sender.spigot().sendMessage(msg);
