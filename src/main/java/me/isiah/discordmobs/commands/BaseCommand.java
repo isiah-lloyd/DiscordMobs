@@ -10,7 +10,10 @@ import org.bukkit.command.TabCompleter;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
 import me.isiah.discordmobs.Main;
 import me.isiah.discordmobs.Main.PERM_NODES;
 
@@ -71,10 +74,13 @@ public class BaseCommand implements CommandExecutor, TabCompleter {
                         }
                         else {
                             sender.sendMessage(ChatColor.RED + "" + "There was an issue connecting to discord");
-                        } 
+                        }
                     }
                     else {
-                        sender.sendMessage("Connect Help");
+                        sender.spigot().sendMessage(new ComponentBuilder("Click Here").underlined(true).color(ChatColor.AQUA)
+                        .event(new ClickEvent(Action.OPEN_URL, "http://discordmobs.isiah.me/"))
+                        .append(" to learn how to connect DiscordMobs to your Discord server!", FormatRetention.NONE)
+                        .create());
                     }
                     return true;
                 }
@@ -109,10 +115,14 @@ public class BaseCommand implements CommandExecutor, TabCompleter {
                                     .append(" permission node")
                                     .color(ChatColor.RED)
                                     .create();
-                                
+
    }
    private BaseComponent[] getHelpMsg(CommandSender sender) {
        ComponentBuilder msg = new ComponentBuilder("Command Help:\n");
+       if(sender.hasPermission(Main.PERM_STATUS)) {
+            msg.append("/discordmobs (status)").color(ChatColor.GOLD)
+            .append(" -- See if DiscordMobs is connected to your Discord server and how many members are synced.\n").color(ChatColor.WHITE);
+        }
        if(sender.hasPermission(Main.PERM_CONNECT)) {
             msg.append("/discordmobs connect").color(ChatColor.GOLD)
             .append(" -- Connect DiscordMobs to your Discord server\n").color(ChatColor.WHITE);
@@ -121,6 +131,10 @@ public class BaseCommand implements CommandExecutor, TabCompleter {
             msg.append("/discordmobs sync").color(ChatColor.GOLD)
             .append(" -- Syncs current members on Discord server to DiscordMobs\n").color(ChatColor.WHITE);
        }
+       if(sender.hasPermission(Main.PERM_RELOAD)) {
+        msg.append("/discordmobs reload").color(ChatColor.GOLD)
+        .append(" -- Reloads config.yml from the file system\n").color(ChatColor.WHITE);
+   }
        return msg.create();
    }
 }

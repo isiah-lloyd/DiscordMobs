@@ -13,6 +13,13 @@ import com.google.gson.Gson;
 
 import org.bukkit.command.CommandSender;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
+
 public class DiscordConnector {
 
     private Random rand = new Random();
@@ -90,7 +97,13 @@ public class DiscordConnector {
                 return true;
             }
             else {
-                sendToPlayerOrConsole(sender, "[DiscordMobs] This bot is not in any Discord servers, clearing access token");
+                BaseComponent[] msg = new ComponentBuilder("[DiscordMobs] This bot is not in any Discord servers, clearing access token!")
+                                            .color(ChatColor.RED)
+                                            .append("\nClick here").underlined(true).color(ChatColor.AQUA)
+                                            .event(new ClickEvent(Action.OPEN_URL, "http://discordmobs.isiah.me/"))
+                                            .append(" to learn how to connect DiscordMobs to your Discord server!", FormatRetention.NONE)
+                                            .create();
+                sendToPlayerOrConsole(sender, "");
                 this.accessToken = null;
                 return false;
             }
@@ -127,7 +140,13 @@ public class DiscordConnector {
         try {
             HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
             if(response.statusCode() == 403) {
-                sendToPlayerOrConsole(sender, "[DiscordMobs] Got HTTP 403 Unauthorized, did you remember to enable the SERVER MEMBERS INTENT permission on Discord?");
+                BaseComponent[] msg = new ComponentBuilder("[DiscordMobs] Got HTTP 403 Unauthorized, did you remember to enable the SERVER MEMBERS INTENT permission on Discord?")
+                                      .color(ChatColor.RED)
+                                      .append("\nClick here").underlined(true).color(ChatColor.AQUA)
+                                      .event(new ClickEvent(Action.OPEN_URL, "http://discordmobs.isiah.me/"))
+                                      .append(" to learn how to connect DiscordMobs to your Discord server!", FormatRetention.NONE)
+                                      .create();
+                sendToPlayerOrConsole(sender, msg);
                 return;
             }
             else if(response.statusCode() != 200) {
@@ -157,6 +176,14 @@ public class DiscordConnector {
         }
         else {
             sender.sendMessage(msg);
+        }
+    }
+    public void sendToPlayerOrConsole(CommandSender sender, BaseComponent[] msg) {
+        if (sender == null) {
+            this.plugin.getLogger().info(msg.toString());
+        }
+        else {
+            sender.spigot().sendMessage(msg);
         }
     }
 
