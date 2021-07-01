@@ -29,6 +29,7 @@ public class DiscordConnector {
 
     private GuildDTO guild;
     private List<String> usernames = new ArrayList<String>();
+    private List<String> roleIds = new ArrayList<String>();
     private Main plugin;
 
     public DiscordConnector(Main plugin) {
@@ -38,7 +39,53 @@ public class DiscordConnector {
         if(!token.equals("NO_TOKEN")) {
             this.accessToken = this.plugin.config.getString("access_token");
             this.setGuildId();
+            convertRoleNamesToIds(null, plugin.config.getStringList("roles"));
             this.sync();
+        }
+    }
+
+    public boolean convertRoleNamesToIds(CommandSender sender, List<String> roleNames) {
+        URI url = null;
+        roleIds.clear();
+        if(roleNames.size() == 0) {
+            return false;
+        }
+        try {
+            url = new URI(String.format("https://discord.com/api/guilds/%s/roles", this.guild.id));
+        }
+        catch(URISyntaxException e) {
+            this.plugin.getLogger().warning("There was an error while constructing Roles URI: " + e.toString());
+        }
+        HttpRequest request = HttpRequest.newBuilder(url)
+                                        .header("Authorization", "Bot " + this.accessToken)
+                                        .setHeader("User-Agent", "DiscordMobs (plugins@isiah.me)")
+                                        .GET()
+                                        .build();
+        try {
+            HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 401) {
+                sendToPlayerOrConsole(sender, "[DiscordMobs] Got HTTP 401 Unauthorized, I thinks your access code may be wrong.");
+                return false;
+            }
+            else if (response.statusCode() != 200) {
+                sendToPlayerOrConsole(sender, "[DiscordMobs] Got HTTP " + response.statusCode() + " while getting guilds, is Discord down?");
+            }
+
+            RoleDTO[] roles = new Gson().fromJson(response.body(), RoleDTO[].class);
+            Integer numRolesSynced = 0;
+            for(int i=0; i < roles.length; i++) {
+                RoleDTO role = roles[i];
+                if (roleNames.contains(role.name)) {
+                    roleIds.add(role.id);
+                    numRolesSynced++;
+                }
+            }
+            sendToPlayerOrConsole(sender, "[DiscordMobs] " + numRolesSynced + " roles synced");
+            return true;
+        }
+        catch(Exception e) {
+            sendToPlayerOrConsole(sender, "[DiscordMobs] There was an error while fetching roles: " + e.toString());
+            return false;
         }
     }
 
@@ -118,7 +165,6 @@ public class DiscordConnector {
     }
 
     public void sync(CommandSender sender) throws NullPointerException {
-        //TODO: Assert that the SERVER MEMBERS INTENT perm is enabled, and that HTTP errors are caught 
         this.usernames.clear();
         if(this.guild == null) {
             this.plugin.getLogger().warning("Can not sync members, as no Guild is set");
@@ -154,7 +200,15 @@ public class DiscordConnector {
             }
             GuildMembersDTO[] members = new Gson().fromJson(response.body(), GuildMembersDTO[].class);
             for(GuildMembersDTO member: members) {
-                if(this.plugin.config.getBoolean("ignore_bots") && member.user.bot == true) {}
+                if(this.plugin.config.getBoolean("ignore_bots") && member.user.bot == true) continue;
+                if(roleIds.size() > 0 ) {
+                    for(int i=0; i < member.roles.length; i++) {
+                        if(roleIds.contains(member.roles[i])) {
+                            this.usernames.add(member.user.username);
+                            break;
+                        }
+                    }
+                }
                 else this.usernames.add(member.user.username);
             }
             sendToPlayerOrConsole(sender, "Synced " + usernames.size() + " members");
@@ -188,6 +242,10 @@ public class DiscordConnector {
     }
 
     public class GuildDTO {
+        public String id;
+        public String name;
+    }
+    public class RoleDTO {
         public String id;
         public String name;
     }

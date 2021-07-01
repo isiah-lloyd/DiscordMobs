@@ -4,6 +4,11 @@ access_token: "NO_TOKEN"
 # Setting this to true will not spawn any mobs with names of bots on your Discord Server
 ignore_bots: true
 
+# Setting this will only import users from your Discord server that match one of these roles.
+# For example, if you had a 'Sponsor' role on your Discord server and only wanted their names for mobs to spawn with
+# set roles: ["Sponsor"]. You can add multiple roles here. 
+roles: []
+
 # Chance a hostile mob will spawn with a name tag (Allowed values: 0 - 100)
 # Hostile mobs include: Blaze, Cave Spider, Creeper, Drowned, Elder Guardian, Enderman,
 # Endermite, Evoker, Ghast, Guardian, Hoglin, Husk, Magma Cube, Piglin Brute, Pillager,
