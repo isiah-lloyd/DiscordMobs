@@ -4,3 +4,4 @@ target/
 .project
 .settings/
 copyToPluginFolder.sh
+dependency-reduced-pom.xml
